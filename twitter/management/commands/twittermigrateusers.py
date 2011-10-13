@@ -4,7 +4,7 @@ from twap.twitter.streamreader import StreamHarvest
 from twap.twitter.models import TwitterUser, Tweet
 
 class Command(BaseCommand):
-    help = ''
+    help = 'Migrates users from the old data scructure to the new.  Use to migration from v0.2 to v0.3'
     args = ''
 
     def handle(self, **options):
