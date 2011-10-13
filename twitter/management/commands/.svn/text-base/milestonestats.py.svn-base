@@ -1,0 +1,48 @@
+# A manage.py command to refresh all tickets in the tracback database.
+
+from datetime import datetime
+from optparse import make_option
+
+from django.core.management.base import BaseCommand, CommandError
+from dwrangler.tracback.models import Milestone
+
+class Command(BaseCommand):
+    help = 'Produces some Basic Statistics on completed Milestones'
+    args = ''
+
+
+    def handle(self, start_date, end_date, **options):
+        """
+        Takes the a range of dates and exports milestone information
+        for milestones closed in that period.
+
+        Closed is a lose term and is defined as having no open storypoints
+        and having a ticket last updated in that range.
+        """
+
+        timeformat = '%Y-%m-%d'
+        range_start = datetime.strptime(start_date, timeformat)
+        range_end =  datetime.strptime(end_date, timeformat)
+
+        # Throw an error if date ranges can't be read.
+        if not range_start:
+            raise CommandError("Start date not specified or not in YYYY-MM-DD format!")
+        if not range_end:
+            raise CommandError("End date not specificed or not in YYYY-MM-DD format!")
+        
+        milestones = Milestone.objects.filter(points_open=0, status="Empty", last_completed__range=(range_start, range_end))
+        f = open('ms_stats.txt', 'w')
+        f.write('Time Period: %s to %s\n' %(range_start, range_end))
+        f.write('Project: Milestone, Total Points, Last Ticket Completed, ITR in Development, Milestone Traclink\n')
+        f.write('\n')
+
+        for milestone in milestones:
+            f.write('"%s: %s", ' % (milestone.project.title, milestone.title))
+            total_pts = milestone.points_open + milestone.points_complete
+            f.write('%s, ' %  total_pts)
+            f.write('%s, ' % milestone.last_completed)
+            itr_dev = milestone.time_in_development()/14
+            f.write('%s, ' % itr_dev)
+            f.write('%s' % milestone.traclink())
+            f.write('\n')
+        f.close()

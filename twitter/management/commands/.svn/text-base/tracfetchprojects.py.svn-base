@@ -1,0 +1,15 @@
+# New manage.py command to import basic project information from a trac multi-
+# project rootsite.
+
+from django.core.management.base import BaseCommand
+from dwrangler.tracback.models import TracProjectImporter
+
+class Command(BaseCommand):
+    help = 'Imports project information from a multiproject trac site'
+    args = 'tracurl [tracurl ...]'
+
+    def handle(self, *siteurls, **options):
+        for url in siteurls:
+            tpi = TracProjectImporter(url)
+            tpi.import_projects()
+            print "Done importing projects for %s" % url

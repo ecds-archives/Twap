@@ -1,0 +1,4 @@
+django
+mysql-python
+django-taggit
+tweetstream
