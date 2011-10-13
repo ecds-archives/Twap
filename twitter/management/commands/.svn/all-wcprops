@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/dwrangler/!svn/ver/431/branches/1.x-dev/dwrangler/tracback/management/commands
+END
+tracfetchtickets.py
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/dwrangler/!svn/ver/431/branches/1.x-dev/dwrangler/tracback/management/commands/tracfetchtickets.py
+END
+tracfetchprojects.py
+K 25
+svn:wc:ra_dav:version-url
+V 104
+/svn/dwrangler/!svn/ver/431/branches/1.x-dev/dwrangler/tracback/management/commands/tracfetchprojects.py
+END
+milestonestats.py
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/svn/dwrangler/!svn/ver/431/branches/1.x-dev/dwrangler/tracback/management/commands/milestonestats.py
+END
+tracticketscheck.py
+K 25
+svn:wc:ra_dav:version-url
+V 103
+/svn/dwrangler/!svn/ver/431/branches/1.x-dev/dwrangler/tracback/management/commands/tracticketscheck.py
+END
+__init__.py
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/svn/dwrangler/!svn/ver/431/branches/1.x-dev/dwrangler/tracback/management/commands/__init__.py
+END

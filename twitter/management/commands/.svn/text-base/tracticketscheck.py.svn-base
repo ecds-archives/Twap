@@ -1,0 +1,21 @@
+# A manage.py command to refresh all tickets in the tracback database.
+
+from django.core.management.base import BaseCommand
+from dwrangler.tracback.models import Project
+
+class Command(BaseCommand):
+    help = 'Imports tickets for all projects in the database'
+    args = 'tracurl [tracurl ...]'
+
+    def handle(self, **options):
+        projects = Project.objects.filter(trac_site__isnull=False)
+        f = open('badtickets.txt', 'w')
+        for project in projects:
+            tickets = project.ticketimporter.closed_wrong()
+            
+            for ticket in tickets:
+                line = "%s %s ticket #%s - %s" % (ticket['assigned'], project.title, ticket['ticket'], ''.join([project.trac_site, 'ticket/', ticket['ticket']]))
+                print line
+                f.write(line)
+                f.write('\n')
+        f.close()
