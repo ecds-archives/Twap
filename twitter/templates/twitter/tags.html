@@ -1,0 +1,18 @@
+<h1>occurrence of tags (number of tweets per tag)
+{% if filter %} filtered by <b>{{ filter }}</b>{% endif %}</h1>
+
+{% if not filter %}
+<p>counts for filtered tag sets - e.g., 
+  <a href="{% url twitter:filtered-tags 'occupy' %}">tags with occupy</a>
+{% endif %}
+
+<table width="100%">
+{% for tag in tags %}
+  <tr>
+    <td width="20px">{{ tag.name }}</td>
+    <td>
+    <div style="background-color:yellow;display:inline-block;width:{% widthratio tag.count max 640 %}">{{ tag.count }}</div>
+    </td>
+  </tr>
+{% endfor %}
+</table>
