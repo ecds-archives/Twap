@@ -4,7 +4,7 @@ from taggit.managers import TaggableManager
 # These models are created to capture some information from the Twitter streaming
 # API data return detailed at
 # https://dev.twitter.com/docs/api/1/get/statuses/show/%3Aid
-# the corrisponding return field from the JSON return is noted by the appropraite field.
+# the corresponding return field from the JSON return is noted by the appropriate field.
 
 class TwitterUser(models.Model):
     """
@@ -13,6 +13,9 @@ class TwitterUser(models.Model):
     screen_name = models.CharField(max_length=25, db_index=True) # user.screen_name
     twitter_id = models.CharField(max_length=25) # user.id_str
     location = models.CharField(max_length=50, null=True) # user.location
+
+    def __unicode__(self):
+        return '@%s' % self.screen_name
 
 class Tweet(models.Model):
     """
