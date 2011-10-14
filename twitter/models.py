@@ -8,13 +8,16 @@ from taggit.managers import TaggableManager
 
 class TwitterUser(models.Model):
     """
-    Migrating information aggregated on individual users here.
+    User information from individual tweets.
     """
     screen_name = models.CharField(max_length=25, db_index=True) # user.screen_name
     twitter_id = models.CharField(max_length=25) # user.id_str
     location = models.CharField(max_length=50, null=True) # user.location
 
 class Tweet(models.Model):
+    """
+    Basic model for data on invidual tweets.
+    """
 
     text = models.CharField(max_length=141) # text
     twitter_user = models.ForeignKey(TwitterUser)

@@ -7,6 +7,13 @@ class StreamHarvest(object):
     # Simple hack to grab twitter stuff.
 
     def __init__(self, username, password, track):
+        """
+        Acts on the twitter streaming api to query for tweets fitting a particular track filter.
+
+        :param username:  Twitter username to query the API
+        :param password:  Twitter users password to query API
+        :param track: list of strings to filter tweets for.
+        """
 
         self.username = username
         self.password = password
@@ -15,7 +22,7 @@ class StreamHarvest(object):
     def listen(self):
         # slopppy way to keep it running and reconnecting if it hits a bump.
         # @NOTE you MUST kill the process to get this to stop because of this hack.  I know.... I suck, deal with it..
-        while True:
+        while True:  # Keeps it going and reconnecting if it crashes.  See 'sloppy' above.
             try:
                 with tweetstream.FilterStream(self.username, self.password, track=self.track) as stream:
                     for tweet in stream:
@@ -39,18 +46,29 @@ class StreamHarvest(object):
                print "Error on connection. Reconnecting."
 
     def hashtags(self, tweet):
+        """
+        Turns hashtags into a list so it's easier to act on later.
+        """
         try:
             return [hashtag["text"].lower() for hashtag in tweet["entities"]["hashtags"]]
         except KeyError:
             pass
 
     def make_datetime(self, str_date):
+        """
+        Convienence method to turn the twittter date string into a python datetime object.
+
+        :param str_date:  String to convernt to a datetime object.
+        """
         # Sat Sep 10 22:23:38 +0000 2011
         return datetime.strptime(str_date, "%a %b %d %H:%M:%S +0000 %Y")
 
     def handle_user(self, tweet):
         """
-        Creates pulls the user information if needed to a seperate table.
+        User information from tweets are split into a seperate table for querying and to save
+        tablespace.
+
+        :param tweet:  raw tweet data
         """
         tuser, created = TwitterUser.objects.get_or_create(screen_name=tweet["user"]["screen_name"])
         if created:
@@ -63,7 +81,8 @@ class StreamHarvest(object):
         """
         Grabs information about and from the geo field from the JSON return.
 
-        :param tweet: a Tweet object
+        :param tweet: a Tweet Model Object
+        :param geo:  data from the raw tweet geo field.
         """
         try:
             tg = TwitterGeo(tweet=tweet)
@@ -77,6 +96,9 @@ class StreamHarvest(object):
     def handle_coordinates(self, tweet, coord):
         """
         Grabs information about and from the coordinates field from the JSON return.
+
+        :param tweet:  a Tweet Model Object
+        :param coord:  data from the raw tweet coordinates field.
         """
         try:
             tg = TwitterCoordinate(tweet=tweet)
