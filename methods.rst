@@ -8,3 +8,5 @@ harvest criteria '#ows', '#occupywallstreet', '#occupywallst', '#occupyws', 'occ
 v0.3 Started 17:07 13 Oct 2011
 - Broke out User information into a seperate TwitterUser table and related tweets to that
 - Added TwitterCoordinate and TwitterGeo tables to capture that information when present.
+
+Note:  15 Oct 2011:  App stopped harvesting when twitter appeared to crash.  Lost data from roughly 7 hours of data from about 16:00 to 23:00 UTC.  Noticed.  Killed hung process and restarted usnig 'screen python manage.py twitterharvest'
