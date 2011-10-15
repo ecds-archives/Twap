@@ -30,5 +30,10 @@ class Command(BaseCommand):
         tag_list = Tag.objects.exclude(name__contains=("occupy")).annotate(count=Count('taggit_taggeditem_items')).order_by('-count')
         for tag in tag_list[:200]:
             f.write('%s:%s\n' % (tag.name.encode("utf-8"), tag.count))
-            
-            
+        f.close()
+   
+	f = open('occupy_wordle_%s.txt' % now, 'wb') 
+	occupy_list = Tag.objects.filter(name__contains=("occupy")).annotate(count=Count('taggit_taggeditem_items')).order_by('-count')
+	for tag in occupy_list[:200]:
+	    f.write('%s:%s\n' % (tag.name.encode("utf-8"), tag.count))
+        f.close()            
