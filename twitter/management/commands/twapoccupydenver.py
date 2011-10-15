@@ -26,6 +26,9 @@ class Command(BaseCommand):
 
         tweets = Tweet.objects.filter(tags__name='occupydenver').order_by('twitter_user')        
 
+	# Django has problems with aggregation across generic relationships
+        # So we'll have to read it into a dict and count it there.
+        # https://docs.djangoproject.com/en/dev/ref/contrib/contenttypes/#generic-relations-and-aggregation
 	tweeters = defaultdict(int)
 
         for tweet in tweets:
