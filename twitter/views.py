@@ -1,9 +1,12 @@
 from django.db.models import Count, Avg, Max
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
 from taggit.models import Tag
 from twap.twitter.models import Tweet, TwitterUser
 
 
+@login_required
 def tag_counts(request, filter=None):
     # tags & number of time they have been used, optionally with a filter
     tag_counts = Tag.objects.distinct()
@@ -13,13 +16,16 @@ def tag_counts(request, filter=None):
     return render(request, 'twitter/tags.html',
                   {'tags': tag_counts, 'max': tag_counts[0].count, 'filter': filter})
 
+
+@login_required
 def tweet_counts(request):
     # count tweets per user
     tweet_counts = TwitterUser.objects.annotate(count=Count('tweet')).order_by('-count')
     return render(request, 'twitter/tweets_per_user.html',
                   {'users': tweet_counts, 'max': tweet_counts[0].count})
-    
-    
+
+
+@login_required
 def summary(request):
     total_tweets = Tweet.objects.count()
     total_users = TwitterUser.objects.count()

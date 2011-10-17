@@ -1,5 +1,7 @@
-import tweetstream
+import time
 from datetime import datetime
+
+import tweetstream
 
 from twap.twitter.models import Tweet, TwitterUser, TwitterCoordinate, TwitterGeo
 
@@ -43,7 +45,8 @@ class StreamHarvest(object):
                         except:
                             print "Error Reading Record, skipping."
             except:
-               print "Error on connection. Reconnecting."
+                print "Error on connection. Attempting reconnect in 30 seconds."
+                time.sleep(30)
 
     def hashtags(self, tweet):
         """
