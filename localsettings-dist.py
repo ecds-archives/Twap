@@ -13,6 +13,22 @@ DEV_ENV = True
 DEBUG = True
 TEMPLATE_DEBUG = True
 
+# Set this to teh same value returned by request.MET['SCRIPT_NAME'] as a
+# workaround for Django not picking up URL subdirectory installs.
+# A pox on you Django!!! May Digo's eat your baby!
+SUB_URL = ''
+
+# Orverrides the default entries from settings.py to account for the SUB_URL
+MEDIA_URL = '%s/sitemedia' % SUB_URL
+STATIC_URL = '%s/sitemedia/' % SUB_URL
+ADMIN_MEDIA_PREFIX = '%s/sitemedia/admin/' % SUB_URL
+
+# Some default login and logout URL information.
+LOGIN_URL = '%s/login/' % SUB_URL
+LOGIN_REDIRECT_URL = '%s/' % SUB_URL
+LOGOUT_URL = '%s/logout/' % SUB_URL
+
+
 ADMINS = (
         # Name and email address of people to email as admins.
         # 'Name', 'email@email.com'

@@ -16,6 +16,7 @@
 *.sqlite
 *.sql
 *.csv
+*.txt
 
 # Specific Files to ignore #
 ############################

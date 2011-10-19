@@ -29,7 +29,7 @@ def tweet_counts(request):
 def summary(request):
     total_tweets = Tweet.objects.count()
     total_users = TwitterUser.objects.count()
-    retweets = Tweet.objects.filter(text__contains='RT').count()
+    retweets = Tweet.objects.filter(text__contains='RT ').count()
 
     # maximum, average tweets per user
     user_max_avg = TwitterUser.objects.annotate(count=Count('tweet')).aggregate(avg=Avg('count'),
