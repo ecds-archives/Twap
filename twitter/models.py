@@ -22,7 +22,7 @@ class Tweet(models.Model):
     Basic model for data on invidual tweets.
     """
 
-    text = models.CharField(max_length=141) # text
+    text = models.CharField(max_length=160) # text
     twitter_user = models.ForeignKey(TwitterUser)
     tweet_id = models.CharField(max_length=25) # id_str
     created_at = models.DateTimeField() # created_at
