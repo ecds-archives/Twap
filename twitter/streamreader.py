@@ -24,11 +24,11 @@ class StreamHarvest(object):
     def listen(self):
         # slopppy way to keep it running and reconnecting if it hits a bump.
         # @NOTE you MUST kill the process to get this to stop because of this hack.  I know.... I suck, deal with it..
-#        while True:  # Keeps it going and reconnecting if it crashes.  See 'sloppy' above.
-#            try:
+        while True:  # Keeps it going and reconnecting if it crashes.  See 'sloppy' above.
+            try:
                 with tweetstream.FilterStream(self.username, self.password, track=self.track) as stream:
                     for tweet in stream:
-#                        try:
+                        try:
                             tuser = self.handle_user(tweet)
                             obj = Tweet(twitter_user=tuser)
                             obj.text = tweet["text"].encode('utf-8')
@@ -42,11 +42,11 @@ class StreamHarvest(object):
                             if tweet["coordinates"]:
                                 self.handle_coordinates(obj, tweet["coordinates"])
                             print "%s - %s" % (stream.count, self.hashtags(tweet))
-#                        except:
-#                            print "Error Reading Record, skipping."
-#            except:
-#                print "Error on connection. Attempting reconnect in 30 seconds."
-#                time.sleep(30)
+                        except:
+                            print "Error Reading Record, skipping."
+            except:
+                print "Error on connection. Attempting reconnect in 30 seconds."
+                time.sleep(30)
 
     def hashtags(self, tweet):
         """
