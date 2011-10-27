@@ -13,38 +13,71 @@ later.
 Requirements
 ============
 
-The application is pretty much a standard Django app. Additional requirements
-and libraries can be installed via pip from the requirements.txt file
+Additional libraries required to run the application are listed in
+requirements.txt.
+
+I recommend using Pip to install the requirements in a virtualenv.
 
 Setup
 ==========
 
-* In localsettings add your TWITTER_USER and TWITTER_PASSWORD information.
+* Copy localsettings-dist.py to localsettings.py and configure as
+  needed.
+* In localsettings.py add your TWITTER_USER and TWITTER_PASSWORD information.
 * Add a list of terms to filter tweets by in settings.SEARCHLIST
 * Syncdb and follow other normal Django setup processes.  Note this does NOT
   need to be setup on apache.  It mostly runs via manage.py
 
-Harvesting
-==========
+Starting & Stopping Harvest
+===========================
 
-Assuming you have the app installed and setup correctly you can initiate
-harvesting via the manage.py command twitterharvest like so::
+** Stopping Harvest **
 
-    >python manage.py twitterharvest
+I made twap to be hard to kill though it seems to lock up ever few days.  I
+believe this is because the MySQL log fills up but I'm not sure.  Anyway,
+if you need to restart the app you will have to *manually kill the app*
+by using the kill command.  To do this you'll need the PID of the thread
+which is easily obtained by typing::
 
-When it executes you should see a count of how many tweets have been processed
-so far in that session as well as a list of the hashtags from that tweet.
+    > ps aux | grep twitterharvest
 
-IMPORTANT - Stopping the app
-============================
+This will list all the jobs running with that name.  I often run this as
+'SCREEN' (see below) and here is an example of the output you will get::
 
-Since this is a hack I just want to keep running so I don't lose data the
-manage.py command has no way of directly exiting (if you hit control C it
-will just restart itself)
+    sturnbu   2196  0.0  0.0   5248   528 ?        Ss   Oct25   0:07 SCREEN python manage.py twitterharvest
+    sturnbu   2197  1.0 61.1 3096908 2438712 pts/1 Ss+  Oct25  29:04 python manage.py twitterharvest
+    sturnbu  18738  0.0  0.0   4156   876 pts/3    S+   12:41   0:00 grep --color=auto twitterharvest
 
-So to stop it you have to kill it directly
+The PID is the number right after the user name and in this example I will
+want to kill PID '2196' but ** that value will differ in each case ** so
+use the command above to get the current PID.
 
-On LINUX just find the pid via 'ps aux -u <your username>' and then 'kill <pid>'
+If in doubt just kill any PID with 'twitterharvest' in it but you should only
+have to kill the version with 'SCREEN' in it's process.
+
+To Kill a process you only need to type::
+
+    > kill <PID>
+
+In this example that would be::
+
+    > kill 2196
+
+You can ensure the thread was killed by running the ps command again listed
+above but this time you should only see the line with 'grep' in it, which is
+the thread you created by running the ps command, and that is expected.
+
+** Starting Harvest **
+
+Harvest is run vi a manage.py command and if the application is installed and
+configured right you should only need to run the 'twitterharvest' command from
+the applicaiton root directory like so::
+
+    > SCREEN python manage.py twitterharvest
+
+By using the SCREEN command you should be able to close out the window and the
+harvest will continue to run even after you log out.
+
 
 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . _________
