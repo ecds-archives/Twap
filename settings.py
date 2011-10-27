@@ -113,7 +113,7 @@ INSTALLED_APPS = (
 )
 
 # twap searchlist
-SEARCHLIST = ['#ows', '#occupy']
+SEARCHLIST = ['#ows', '#occupywallstreet', '#occupywallst', '#occupyws', '#occupywallstr']
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
