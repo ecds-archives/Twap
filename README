@@ -73,9 +73,9 @@ Harvest is run vi a manage.py command and if the application is installed and
 configured right you should only need to run the 'twitterharvest' command from
 the applicaiton root directory like so::
 
-    > SCREEN python manage.py twitterharvest
+    > screen python manage.py twitterharvest
 
-By using the SCREEN command you should be able to close out the window and the
+By using the screen command you should be able to close out the window and the
 harvest will continue to run even after you log out.
 
 
