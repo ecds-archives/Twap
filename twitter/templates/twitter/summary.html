@@ -1,5 +1,8 @@
-<h1>Summary information</h1>
+{% extends "site_base.html" %}
 
+{% block content-title %}Summary information{% endblock %}
+
+{% block content-body %}
 <p>Currently harvested data</p>
 
 <ul>
@@ -8,3 +11,4 @@
   <li>On average, <b>{{ avg_per_user|floatformat:2 }}</b> tweets per user; 
       current maximum is <b>{{ max_per_user }}</b> by a single user.</li>
 </ul>
+{% endblock %}
