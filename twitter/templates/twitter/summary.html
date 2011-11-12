@@ -7,7 +7,8 @@
 
 <ul>
   <li><b>{{ tweet_count }}</b> Tweets harvested.</li>
-  <li><b>{{ user_count }}</b> unique Twitter users have used {{ tag_count }} unique hashtags.</li>
+  <li><b>{{ user_count }}</b> unique <a href="{% url twitter:user_list %}">Twitter Users</a>
+      have used <strong>{{ tag_count }}</strong> unique <a href="{% url twitter:tag_list %}">Hashtags</a>.</li>
   <li>On average, <b>{{ avg_per_user|floatformat:2 }}</b> tweets per user;
       current maximum is <b>{{ max_per_user }}</b> by a single user.</li>
   <li>{{ volume_count }} tweets have been posted in the last 2 hours.</li>

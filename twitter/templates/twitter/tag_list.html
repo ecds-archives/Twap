@@ -1,0 +1,17 @@
+{% extends 'twitter/base.html' %}
+
+{% block content-title %}{{ title }}{% endblock %}
+
+{% block content-body %}
+{% include 'snippets/simpleform.html' %}
+<table width="100%">
+    {% for tag in tag_list %}
+      <tr>
+        <td>{{ tag.name }}</td>
+        <td>
+        {{ tag.count }}
+        </td>
+      </tr>
+    {% endfor %}
+</table>
+{% endblock %}
