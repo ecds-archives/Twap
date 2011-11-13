@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse
 
 from taggit.models import Tag
 from twap.twitter.models import Tweet, TwitterUser
-from twap.twitter.forms import TagForm
+from twap.twitter.forms import TagForm, UserSearchForm
 
 
 @login_required
@@ -41,11 +41,12 @@ def tag_list(request):
             tag_list = tag_list.exclude(name__icontains=word.strip())
         search_list = form.cleaned_data['search'].split(',')
         search_words = [word.strip() for word in search_list]
+        print search_words
         if search_words:
             q_list = Q()
             for word in search_words:
                 q_list.add(Q(name__icontains=word.strip()), Q.OR)
-            tag_list.filter(q_list)
+            tag_list = tag_list.filter(q_list)
 
     tag_list = tag_list.annotate(count=Count('taggit_taggeditem_items')).order_by('-count')
 
@@ -76,11 +77,22 @@ def tag_view(request, tag_slug):
     })
 
 @login_required
-def tweet_counts_by_user(request):
-    # count tweets per user
-    tweet_counts = TwitterUser.objects.annotate(count=Count('tweet')).order_by('-count')
-    return render(request, 'twitter/tweets_per_user.html',
-                  {'users': tweet_counts, 'max': tweet_counts[0].count})
+def user_list(request):
+    """
+    Lists users and the number of tweets archived here and provides basic
+    searching and filtering by username.
+    """
+    users = TwitterUser.objects.all()
+    form = UserSearchForm(request.POST or None)
+    if form.is_valid():
+        search = form.cleaned_data['search']
+        users = users.filter(screen_name__icontains=search)
+    users = users.annotate(count=Count('tweet')).order_by('-count')
+    return render(request, 'twitter/user_list.html', {
+        'form': form,
+        'users': users,
+        'max': users[0].count
+    })
 
 
 @login_required

@@ -1,0 +1,25 @@
+{% extends 'twitter/base.html' %}
+
+{% block content-title %}{{ title }}{% endblock %}
+
+{% if form %}
+    {% include 'snippets/simpleform.html' %}
+{% endif %}
+
+{% block content-body %}
+    <table width="100%">
+    <tr>
+        <th>Screename</th>
+        <th># of tweets</th>
+    </tr>
+    </tr>
+    {% for user in users %}
+      <tr>
+        <td>@{{ user.screen_name }}</td>
+        <td>
+            {{ user.count }}
+        </td>
+      </tr>
+    {% endfor %}
+    </table>
+{% endblock %}

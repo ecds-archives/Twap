@@ -52,6 +52,8 @@
 			<ul id="navlinks">
 			{% block navlinks %}
 				<li><a href="{% url twitter:summary %}">Home</a></li>
+                <li><a href="{% url twitter:tag_list %}">Hashtags</a></li>
+                <li><a href="{% url twitter:user_list %}">TwitterUsers</a></li>
             {% endblock %}
 			</ul>
 		</div>
