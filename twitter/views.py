@@ -69,11 +69,13 @@ def tag_view(request, tag_slug):
     # Num of users using this tag.
     # Num of tweets tagged with this.
     tweet_list = Tweet.objects.filter(tags__slug=tag_slug)
-    tweet_count = tweets.count()
+    tweet_count = tweet_list.count()
+    user_list = TwitterUser.objects.filter(tweet__tags=tag).annotate(count=Count('tweet')).aggregate(avg=Avg('count'),
+                                                                               max=Max('count'))
     return render(request, 'tag_detail.html', {
         'tag': tag,
         'tweet_list': tweet_list,
-        'tweet_count': tag_count,
+        'tweet_count': tweet_count,
     })
 
 @login_required
@@ -94,6 +96,20 @@ def user_list(request):
         'max': users[0].count
     })
 
+@login_required
+def user_view(request, screen_name):
+    """
+    Pulls back some information on and individual twitter username.
+
+    :param screen_name: twitter username
+    """
+    user = Twitter.objects.get(screen_name=screen_name)
+    tweets = Tweet.objects.filter(twitter_user=user)
+    return render(request, 'twitter/user_view.html', {
+        'user': user,
+        'tweet_count': tweets.count(),
+        'tweet_list': tweets,
+    })
 
 @login_required
 def summary(request):
