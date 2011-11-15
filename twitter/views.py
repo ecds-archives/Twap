@@ -8,9 +8,13 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 
 from taggit.models import Tag
-from twap.twitter.models import Tweet, TwitterUser
+from twap.twitter.models import Tweet, TwitterUser, TwitterGeo
 from twap.twitter.forms import TagForm, UserSearchForm
 
+def limit(max, count):
+    if count < max:
+        return count
+    return max
 
 @login_required
 def tag_counts(request, filter=None, exclude=None):
@@ -48,14 +52,16 @@ def tag_list(request):
                 for word in search_words:
                     q_list.add(Q(name__icontains=word.strip()), Q.OR)
                 tag_list = tag_list.filter(q_list)
-
+    count = tag_list.count()
     tag_list = tag_list.annotate(count=Count('taggit_taggeditem_items')).order_by('-count')
-
+    max = limit(200, count)
     return render(request, 'twitter/tag_list.html', {
-        'tag_list': tag_list,
+        'tag_list': tag_list[:max],
         'max': tag_list.count(),
         'form': form,
         'title': title,
+        'max': max,
+        'count': count,
         'form_action': form_action,
         'form_legend': 'Filter Hashtags',
     })
@@ -93,13 +99,16 @@ def user_list(request):
     if form.is_valid():
         search = form.cleaned_data['search']
         users = users.filter(screen_name__icontains=search)
+    count = users.count()
     users = users.annotate(count=Count('tweet')).order_by('-count')
+    max = limit(200, count)
     return render(request, 'twitter/user_list.html', {
         'form': form,
         'form_action': form_action,
         'form_legend': 'Search Screen Names',
-        'users': users,
-        'max': users[0].count,
+        'users': users[:max],
+        'max': max,
+        'count': count,
         'title': title,
     })
 
@@ -123,6 +132,7 @@ def summary(request):
     tweet_count = Tweet.objects.count()
     user_count = TwitterUser.objects.count()
     tag_count = Tag.objects.count()
+    loc_count = TwitterGeo.objects.count()
 
     now = datetime.now()
     then = now - timedelta(hours=2)
@@ -135,6 +145,7 @@ def summary(request):
                   {'tweet_count': tweet_count,
                    'user_count': user_count,
                    'tag_count': tag_count,
+                   'loc_count': loc_count,
                    'volume_count': volume_count,
 #                   'max_per_user': user_max_avg['max'],
 #                   'avg_per_user': user_max_avg['avg']
