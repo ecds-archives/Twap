@@ -129,13 +129,14 @@ def summary(request):
     volume_count = Tweet.objects.filter(created_at__range=(then, now)).count()
 
     # maximum, average tweets per user
-    user_max_avg = TwitterUser.objects.annotate(count=Count('tweet')).aggregate(avg=Avg('count'),
-                                                                               max=Max('count'))
+#    user_max_avg = TwitterUser.objects.annotate(count=Count('tweet')).aggregate(avg=Avg('count'),
+#                                                                               max=Max('count'))
     return render(request, 'twitter/summary.html',
                   {'tweet_count': tweet_count,
                    'user_count': user_count,
                    'tag_count': tag_count,
                    'volume_count': volume_count,
-                   'max_per_user': user_max_avg['max'],
-                   'avg_per_user': user_max_avg['avg']})
+#                   'max_per_user': user_max_avg['max'],
+#                   'avg_per_user': user_max_avg['avg']
+                    })
     

@@ -8,11 +8,9 @@
 <p>Summary of the harvest to date:</p>
 
 <ul>
-  <li><b>{{ tweet_count|intcomma }}</b> Tweets harvested.</li>
-  <li><b>{{ user_count|intcomma }}</b> unique <a href="{% url twitter:user_list %}">Twitter Users</a>
+  <li><strong>{{ tweet_count|intcomma }}</strong> Tweets harvested.</li>
+  <li><strong>{{ user_count|intcomma }}</strong> unique <a href="{% url twitter:user_list %}">Twitter Users</a>
       have used <strong>{{ tag_count|intcomma }}</strong> unique <a href="{% url twitter:tag_list %}">Hashtags</a>.</li>
-  <li>On average, <b>{{ avg_per_user|floatformat:2 }}</b> tweets per user;
-      current maximum is <b>{{ max_per_user }}</b> by a single user.</li>
-  <li>{{ volume_count|intword }} tweets have been posted in the last 2 hours.</li>
+  <li><strong>{{ volume_count|intword }}</strong> tweets have been posted in the last 2 hours.</li>
 </ul>
 {% endblock %}
