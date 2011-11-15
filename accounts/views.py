@@ -6,10 +6,10 @@ from django.core.urlresolvers import reverse
 
 def authenticate_user(request):
     """Logs a user into the application."""
-    if request.user.is_authenticated():
-        return HttpResponseRedirect(reverse('account:index'))
-    auth_form = AuthenticationForm(None, request.POST or None)
     nextpage = request.GET.get('next', reverse('twitter:summary'))
+    if request.user.is_authenticated():
+        return HttpResponseRedirect(nextpage)
+    auth_form = AuthenticationForm(None, request.POST or None)
     msg = "Not Logged in"
     if auth_form.is_valid():
         login(request, auth_form.get_user())

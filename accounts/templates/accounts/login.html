@@ -11,9 +11,9 @@
 {% endif %}
 
 {% block content-body %}
-    <form action="{% url accounts:login-form %}" method="POST">
+    <form action="{% url accounts:login %}" method="POST">
     {% csrf_token %}
-
+    <fieldset><legend>User Login</legend>
         {% for field in auth_form %}
             <div class="fieldWrapper">
                 {{ field.errors }}
@@ -22,6 +22,7 @@
         {%  endfor %}
     <input type="submit" value="Login" />
     <input type="hidden" name="next" value="{{ next }}" />
+    </fieldset>
     </form>
     {{ ct }}
 {%  endblock %}
