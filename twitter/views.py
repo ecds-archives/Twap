@@ -30,23 +30,24 @@ def tag_list(request):
     provide an search filter or exclude filter on tags.
     """
     tag_list = Tag.objects.distinct()
-    title = "Hashtags"
+    title = "Hashtags used"
 
     form = TagForm(request.POST or None)
     form_action = reverse('twitter:tag_list')
     if form.is_valid():
-        exclude_list = form.cleaned_data['exclude'].split(',')
-        exclude_words = [word.strip() for word in exclude_list] # conpensates if user submits spaces as a search.
-        for word in exclude_words:
-            tag_list = tag_list.exclude(name__icontains=word.strip())
-        search_list = form.cleaned_data['search'].split(',')
-        search_words = [word.strip() for word in search_list]
-        print search_words
-        if search_words:
-            q_list = Q()
-            for word in search_words:
-                q_list.add(Q(name__icontains=word.strip()), Q.OR)
-            tag_list = tag_list.filter(q_list)
+        exclude_cleaned = form.cleaned_data['exclude'].strip()
+        if exclude_cleaned:
+            exclude_words = [word.strip() for word in exclude_cleaned.split(',')] # conpensates if user submits spaces as a search.
+            for word in exclude_words:
+                tag_list = tag_list.exclude(name__icontains=word.strip())
+        search_cleaned = form.cleaned_data['search'].strip()
+        if search_cleaned: # Was going to do custom is_valid but this is more explicit.
+            search_words = [word.strip() for word in search_cleaned.split(',')]
+            if search_words:
+                q_list = Q()
+                for word in search_words:
+                    q_list.add(Q(name__icontains=word.strip()), Q.OR)
+                tag_list = tag_list.filter(q_list)
 
     tag_list = tag_list.annotate(count=Count('taggit_taggeditem_items')).order_by('-count')
 
@@ -54,8 +55,9 @@ def tag_list(request):
         'tag_list': tag_list,
         'max': tag_list.count(),
         'form': form,
-        'tite': title,
+        'title': title,
         'form_action': form_action,
+        'form_legend': 'Filter Hashtags',
     })
 
 @login_required
@@ -84,16 +86,21 @@ def user_list(request):
     Lists users and the number of tweets archived here and provides basic
     searching and filtering by username.
     """
+    title = 'Twitter users and tweet count'
     users = TwitterUser.objects.all()
     form = UserSearchForm(request.POST or None)
+    form_action = reverse('twitter:user_list')
     if form.is_valid():
         search = form.cleaned_data['search']
         users = users.filter(screen_name__icontains=search)
     users = users.annotate(count=Count('tweet')).order_by('-count')
     return render(request, 'twitter/user_list.html', {
         'form': form,
+        'form_action': form_action,
+        'form_legend': 'Search Screen Names',
         'users': users,
-        'max': users[0].count
+        'max': users[0].count,
+        'title': title,
     })
 
 @login_required

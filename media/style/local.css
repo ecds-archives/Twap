@@ -1,0 +1,43 @@
+#navbar ul
+{
+list-style: none;
+padding: 0;
+margin: 0;
+}
+
+#navbar li
+{
+float: left;
+margin: 0 0.15em;
+}
+
+#navbar li a
+{
+background: #fff bottom left repeat-x;
+height: 2em;
+line-height: 2em;
+width: 9em;
+display: block;
+border: 0.1em solid #dcdce9;
+color: #0d2474;
+text-decoration: none;
+text-align: center;
+}
+
+#skip-to {
+    /*display: none;*/
+    position: absolute;
+    margin-top: -9999px;
+}
+
+#header {
+    display: none;
+}
+
+#main {
+    clear:both;
+    position: absolute;
+    margin: 3px;
+    margin-top: 3em;
+}
+

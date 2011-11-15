@@ -2,12 +2,11 @@
 
 {% block content-title %}{{ title }}{% endblock %}
 
-{% if form %}
-    {% include 'snippets/simpleform.html' %}
-{% endif %}
-
 {% block content-body %}
-    <table width="100%">
+    {% if form %}
+        {% include 'snippets/simpleform.html' %}
+    {% endif %}
+    <table>
     <tr>
         <th>Screename</th>
         <th># of tweets</th>
@@ -15,7 +14,7 @@
     </tr>
     {% for user in users %}
       <tr>
-        <td>@{{ user.screen_name }}</td>
+        <td><a href="http://twitter.com/#!/{{ user.screen_name|urlize }}" target="_blank">@{{ user.screen_name }}</a></td>
         <td>
             {{ user.count }}
         </td>

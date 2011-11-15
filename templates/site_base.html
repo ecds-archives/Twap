@@ -18,6 +18,12 @@
   {% endblock %}
 
   {% block style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}style/blueprint/screen.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="{{ STATIC_URL }}style/blueprint/print.css" type="text/css" media="print">
+    <!--[if lt IE 8]>
+        <link rel="stylesheet" href="{{ STATIC_URL }}style/blueprint/ie.css" type="text/css" media="screen, projection">
+    <![endif]-->
+    <link rel="stylesheet" href="{{ STATIC_URL }}style/local.css" type="text/css" media="screen projection">
   {% endblock %}
 
     {% block scripts %}
@@ -28,7 +34,6 @@
     {% block google_analytics %}
     {% endblock %}
 </head>
-<body>
 <body>
 
   <div id="page"><div id="page-inner">
