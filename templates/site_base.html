@@ -44,29 +44,30 @@
         <a href="#content">Skip to Content</a>
     </div> <!-- /#skip-to -->
 
+  {% block navbar %}
+      <div id="navbar">
+          <div id="navbar-inner">
+              <a href="#navigation"></a>
+          <ul>
+              {% block navlinks %}
+                  <li><a href="{% url twitter:summary %}">Home</a></li>
+                  <li><a href="{% url twitter:tag_list %}">Hashtags</a></li>
+                  <li><a href="{% url twitter:user_list %}">TwitterUsers</a></li>
+                  {% if user.is_authenticated %}
+                      <li><a href="{% url accounts:logout %}">Logout</a></li>
+                  {% endif %}
+              {% endblock %}
+          </ul>
+          </div>
+      </div>
+  {% endblock %}
+
     <div id="header">
     	<div id="header-inner">
-    	    <h1>Twap</h1>
+    	    <h1>Twitter Trap</h1>
     	</div> <!-- /#header-inner -->
-	</div> <!-- /#header -->
 
-	{% block navbar %}
-	<div id="navbar">
-		<div id="navbar-inner">
-			<a href="#navigation"></a>
-			<ul id="navlinks">
-			{% block navlinks %}
-				<li><a href="{% url twitter:summary %}">Home</a></li>
-                <li><a href="{% url twitter:tag_list %}">Hashtags</a></li>
-                <li><a href="{% url twitter:user_list %}">TwitterUsers</a></li>
-                {% if user.is_authenticated %}
-                    <li><a href="{% url accounts:logout %}">Logout</a></li>
-                {% endif %}
-            {% endblock %}
-			</ul>
-		</div>
-	</div>
-	{% endblock %}
+	</div> <!-- /#header -->
 
     <div id="main">
     	<div id="main-inner">

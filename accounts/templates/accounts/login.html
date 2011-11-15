@@ -4,7 +4,7 @@
 
 {% if auth_form.non_field_errors%}
     {% block message %}
-        <div id="error_msg">
+        <div id="error_msg" class="error">
         {{ auth_form.non_field_errors }}
         </div>
     {% endblock %}
