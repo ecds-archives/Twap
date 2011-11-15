@@ -1,5 +1,7 @@
 {% extends 'twitter/base.html' %}
 
+{% load humanize %}
+
 {% block content-title %}{{ title }}{% endblock %}
 
 {% block content-body %}
@@ -16,7 +18,7 @@
       <tr>
         <td><a href="http://twitter.com/#!/{{ user.screen_name|urlize }}" target="_blank">@{{ user.screen_name }}</a></td>
         <td>
-            {{ user.count }}
+            {{ user.count|intcomma }}
         </td>
       </tr>
     {% endfor %}
