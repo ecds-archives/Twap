@@ -50,7 +50,7 @@
               <a href="#navigation"></a>
           <ul>
               {% block navlinks %}
-                  <li><a href="{% url twitter:summary %}">Home</a></li>
+                  <li><a href="{% url twitter:summary %}" name="navigation">Home</a></li>
                   <li><a href="{% url twitter:tag_list %}">Hashtags</a></li>
                   <li><a href="{% url twitter:user_list %}">TwitterUsers</a></li>
                   {% if user.is_authenticated %}
@@ -118,9 +118,10 @@
 	<div id="footer">
 		<div id="footer-inner">
 			{%  block footer %}
-                <div id="copyright" class="copyright">
+                <div id="copyright" class="copyright small">
                     Twitter Trap (Twap) was created by the <a href="https://web.library.emory.edu">Emory University
-                    General Library</a>.  You can find more information about the software and practices on
+                    General Library</a>.<br />
+                    You can find more information about the software and practices on
                     <a href="https://github.com/emory-libraries/Twap">GitHub/Twap</a>.
                 </div>
             {% endblock %}

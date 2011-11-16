@@ -36,7 +36,7 @@ margin: 0 0.1em;
     margin-top: -9999px;
 }
 
-#header div {
+#header div, #footer .copyright {
     background-color: #112b46;
     margin: 0;
     padding-top:  .6em;
@@ -44,6 +44,7 @@ margin: 0 0.1em;
     padding-right: 1em;
     padding-left: 1em;
     vertical-align: middle;
+    color: #fff;
 }
 #header h1 {
     font-size: 1.2em;
@@ -53,14 +54,13 @@ margin: 0 0.1em;
     color: #fff;
 }
 
-#main {
+#main, #footer {
     clear:both;
     margin-right: .25em;
-    margin-left; .25em;
-    margin-bottom: -2000px;
+    margin-left: .25em;
 }
 
-#main-inner {
+#main-inner, #footer-inner {
     margin: .5em 2em;
     padding-top: 1em;
 }
@@ -68,6 +68,21 @@ margin: 0 0.1em;
 #content {
     margin: 0 1em;
     padding: 0 1em;
+}
+
+#footer div {
+    display: block;
+    clear: both;
+}
+
+#footer .copyright {
+    font-weight:bold;margin-top:-0.2em;margin-bottom:1em; text-align: center;
+    padding:1em 1.4em 1.4em 1.4em;margin:0 0 1.5em 0;border:1px solid #ccc;
+}
+
+#footer .copyright a {
+    color: #fff;
+    text-emphasis: underline;
 }
 
 .tweet-box {padding:1em;margin-bottom:.5em;}
