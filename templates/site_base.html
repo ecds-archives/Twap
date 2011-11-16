@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>
+    {% block page-title %}Twap {% block page-subtitle %} - Home{% endblock %}{% endblock %}
+  </title>
+
+  {% block page-head %}
+    {% comment %}Put Extra Header information here.  Use block.super to keep the icon.{% endcomment %}
+  	<link rel="shortcut icon" href="{{ STATIC_URL }}favicon.ico" type="image/x-icon" />
+    {% block feed-links %}
+        {% if alt_links %}
+            {% for link in alt_links %}
+            <link rel="alternate" type="{{ link.type }}" title="{{ link.title }}" href="{{ link.href }}" />
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
+  {% endblock %}
+
+  {% block style %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}style/blueprint/screen.css" type="text/css" media="screen, projection">
+    <link rel="stylesheet" href="{{ STATIC_URL }}style/blueprint/print.css" type="text/css" media="print">
+    <!--[if lt IE 8]>
+        <link rel="stylesheet" href="{{ STATIC_URL }}style/blueprint/ie.css" type="text/css" media="screen, projection">
+    <![endif]-->
+    <link rel="stylesheet" href="{{ STATIC_URL }}style/local.css" type="text/css" media="screen projection">
+  {% endblock %}
+
+    {% block scripts %}
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+
+    {% endblock %}
+
+    {% block google_analytics %}
+    {% endblock %}
+</head>
+<body>
+
+  <div id="page"><div id="page-inner">
+
+    {% comment %}Skip-To links are for accessabilty by screenreaders and such.  {% endcomment %}
+    <div id="skip-to">
+        <a href="#navigation">Skip to Navigation</a>
+        <a href="#content">Skip to Content</a>
+    </div> <!-- /#skip-to -->
+
+  {% block navbar %}
+      <div id="navbar">
+          <div id="navbar-inner">
+              <a href="#navigation"></a>
+          <ul>
+              {% block navlinks %}
+                  <li><a href="{% url twitter:summary %}" name="navigation">Home</a></li>
+                  <li><a href="{% url twitter:tag_list %}">Hashtags</a></li>
+                  <li><a href="{% url twitter:user_list %}">TwitterUsers</a></li>
+                  {% if user.is_authenticated %}
+                      <li><a href="{% url accounts:logout %}">Logout</a></li>
+                  {% endif %}
+              {% endblock %}
+          </ul>
+          </div>
+      </div>
+  {% endblock %}
+
+    <div id="header">
+    	<div id="header-inner">
+    	    <h1>Twitter Trap</h1>
+    	</div> <!-- /#header-inner -->
+
+	</div> <!-- /#header -->
+
+    <div id="main">
+    	<div id="main-inner">
+
+    		{% block sidebar-left %}
+            <div id="sidebar-left">
+                <div id="sidebar-left-inner">
+                  {% block sidebar-left-blocks %}{% endblock %}
+                </div> <!-- /#sidebar-left-inner -->
+             </div> <!-- /#sidebar-left -->
+             {% endblock %}
+
+            {% block sidebar-right %}
+            {% endblock %}
+
+            <div id="content">
+                <div id="content-inner">
+                    <a name="content"></a>
+
+                    {% block message %}{% endblock %}
+                    {% if alert %}
+                    <div id="alert">{{ alert }}</div>
+                    {% endif %}
+
+                    <div id="content-header">
+                         {% block content-header  %}
+                            <h1 class="title">{% block content-title %}{% endblock %}</h1>
+                        {% endblock %}
+                    </div> <!-- /#content-header -->
+
+                    <div id="content-body">
+                        {% block content-body %}
+                        {% endblock %}
+                    </div> <!-- /#content-area -->
+
+
+                    <div id="content-bottom">
+                        {% block content-bottom %}{% endblock %}
+                    </div> <!-- /#content-bottom -->
+
+                </div> <!-- /#content-inner -->
+            </div> <!-- /#content -->
+
+        </div> <!-- /#main-inner -->
+    </div> <!-- /#main -->
+
+
+	<div id="footer">
+		<div id="footer-inner">
+			{%  block footer %}
+                <div id="copyright" class="copyright small">
+                    Twitter Trap (Twap) was created by the <a href="https://web.library.emory.edu">Emory University
+                    General Library</a>.<br />
+                    You can find more information about the software and practices on
+                    <a href="https://github.com/emory-libraries/Twap">GitHub/Twap</a>.
+                </div>
+            {% endblock %}
+	    </div> <!-- /#footer-inner -->
+	</div><!-- /#footer -->
+
+  </div></div> <!-- /#page-inner, /#page -->
+{% block footerscript %}
+{% endblock %}
+</body>
+</html>

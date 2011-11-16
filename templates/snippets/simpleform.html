@@ -1,0 +1,11 @@
+<form action="" method="POST">
+{% csrf_token %}
+    <fieldset>
+    <legend>{{ form_legend }}</legend>
+    {% for field in form %}
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+    {%  endfor %}
+    <input type="submit" />
+    </fieldset>
+</form>

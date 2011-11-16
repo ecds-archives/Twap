@@ -1,0 +1,24 @@
+{% extends 'twitter/base.html' %}
+
+{% load humanize %}
+
+{% block content-title %}{{ title }}{% endblock %}
+
+{% block content-body %}
+{% include 'snippets/simpleform.html' %}
+<table>
+    <caption class="info">Displaying {{ max }} of {{ count|intword }} hashtags.</caption>
+    <tr>
+        <th>Hashtag</th>
+        <th># tweets</th>
+    </tr>
+    {% for tag in tag_list %}
+      <tr>
+        <td><a href="http://www.twitter.com/#!/search/{{ tag.name|urlencode }}" target="_blank">#{{ tag.name }}</a></td>
+        <td>
+        {{ tag.count|intcomma }}
+        </td>
+      </tr>
+    {% endfor %}
+</table>
+{% endblock %}

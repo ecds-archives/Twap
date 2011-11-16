@@ -44,8 +44,11 @@ class StreamHarvest(object):
                             print "%s - %s" % (stream.count, self.hashtags(tweet))
                         except:
                             print "Error Reading Record, skipping."
+            except tweetstream.ConnectionError, e:
+                print "Twitter Connection Error:", e.reason
+                break
             except:
-                print "Error on connection. Attempting reconnect in 30 seconds."
+                print "Unknown Error on connection. Attempting reconnect in 30 seconds."
                 time.sleep(30)
 
     def hashtags(self, tweet):
