@@ -78,8 +78,8 @@ def tag_view(request, tag_slug):
     # Num of tweets tagged with this.
     tweet_list = Tweet.objects.filter(tags__slug=tag_slug)
     tweet_count = tweet_list.count()
-    user_list = TwitterUser.objects.filter(tweet__tags=tag).annotate(count=Count('tweet')).aggregate(avg=Avg('count'),
-                                                                               max=Max('count'))
+#    user_list = TwitterUser.objects.filter(tweet__tags=tag).annotate(count=Count('tweet')).aggregate(avg=Avg('count'),
+#                                                                               max=Max('count'))
     return render(request, 'tag_detail.html', {
         'tag': tag,
         'tweet_list': tweet_list,
@@ -136,7 +136,8 @@ def summary(request):
 
     now = datetime.now()
     then = now - timedelta(hours=2)
-    volume_count = Tweet.objects.filter(created_at__range=(then, now)).count()
+    tweet_list = Tweet.objects.all()
+    volume_count = tweet_list.filter(created_at__range=(then, now)).count()
 
     # maximum, average tweets per user
 #    user_max_avg = TwitterUser.objects.annotate(count=Count('tweet')).aggregate(avg=Avg('count'),
@@ -146,6 +147,7 @@ def summary(request):
                    'user_count': user_count,
                    'tag_count': tag_count,
                    'loc_count': loc_count,
+                   'tweet_list': tweet_list[:20],
                    'volume_count': volume_count,
 #                   'max_per_user': user_max_avg['max'],
 #                   'avg_per_user': user_max_avg['avg']
