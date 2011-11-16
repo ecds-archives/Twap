@@ -25,9 +25,13 @@ class Tweet(models.Model):
     text = models.CharField(max_length=160) # text
     twitter_user = models.ForeignKey(TwitterUser)
     tweet_id = models.CharField(max_length=25) # id_str
-    created_at = models.DateTimeField() # created_at
+    created_at = models.DateTimeField(db_index=True) # created_at
 
     tags = TaggableManager()
+
+    class Meta:
+        ordering = ['-created_at']
+        get_latest_by = 'created_at'
 
 class TwitterGeo(models.Model):
     """

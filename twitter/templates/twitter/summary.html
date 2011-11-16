@@ -21,7 +21,7 @@
     {% for tweet in tweet_list %}
         <div id="{{ tweet.tweet_id }}" class="tweet-box {% cycle 'odd' 'even' %}">
             <div class="tweet-head">
-                <a href="">@{{ tweet.twitter_user.screen_name }}</a> {{ twitter.twitter_user.location }}
+                <a href="http://twitter.com/#!/{{ ttweet.twitter_user.screen_name|urlize }}" target="_blank">@{{ tweet.twitter_user.screen_name }}</a> {{ twitter.twitter_user.location }}
             </div>
             <div class="tweet-text">
                 {{ tweet.text }}
