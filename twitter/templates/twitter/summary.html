@@ -1,10 +1,37 @@
-<h1>Summary information</h1>
+{% extends "site_base.html" %}
 
-<p>Currently harvested data</p>
+{% load humanize %}
 
-<ul>
-  <li><b>{{ total_tweets }}</b> tweets from <b>{{ total_users }}</b> users</li>
-  <li>~<b>{{ retweets }}</b> retweets</li>
-  <li>On average, <b>{{ avg_per_user|floatformat:2 }}</b> tweets per user; 
-      current maximum is <b>{{ max_per_user }}</b> by a single user.</li>
-</ul>
+{% block content-title %}OWS Twitter Harvest Summary{% endblock %}
+
+{% block content-body %}
+    <div id="summary" class="loud">
+        <p>Summary of the harvest to date:</p>
+        <ul>
+          <li><strong>{{ tweet_count|intcomma }}</strong> Tweets harvested.</li>
+          <li><strong>{{ user_count|intcomma }}</strong> unique <a href="{% url twitter:user_list %}">Twitter Users</a>
+              have used <strong>{{ tag_count|intcomma }}</strong> unique <a href="{% url twitter:tag_list %}">Hashtags</a>.</li>
+          <li><strong>{{ loc_count }}</strong> tweets have enbedded locations.</li>
+          <li><strong>{{ volume_count|intword }}</strong> tweets have been posted in the last 2 hours.</li>
+        </ul>
+    </div>
+
+    <div id="tweet_list">
+    <h3>Latest 20 Tweets Harvested</h3>
+    {% for tweet in tweet_list %}
+        <div id="{{ tweet.tweet_id }}" class="tweet-box {% cycle 'odd' 'even' %}">
+            <div class="tweet-head">
+                <a href="http://twitter.com/#!/{{ ttweet.twitter_user.screen_name|urlize }}" target="_blank">@{{ tweet.twitter_user.screen_name }}</a> {{ twitter.twitter_user.location }}
+            </div>
+            <div class="tweet-text">
+                {{ tweet.text }}
+            </div>
+            <div class="tweet-footer">
+                {{ tweet.created_at }} (UTC)
+            </div>
+        </div>
+    {% empty %}
+        <div class="alert tweet">No Tweets Found.</div>
+    {% endfor %}
+    </div>
+{% endblock %}

@@ -2,9 +2,10 @@ from django.conf.urls.defaults import patterns, include, url
 
 from twap.twitter import views
 
-urlpatterns = patterns('',
-    url(r'^$', views.summary, name='summary'),
-    url(r'^tags/$', views.tag_counts, name='tags'),
-    url(r'^tags/(?P<filter>\w+)/$', views.tag_counts, name='filtered-tags'),
-    url(r'^users/$', views.tweet_counts, name='tweet-counts'),
+urlpatterns = patterns('twap.twitter.views',
+    url(r'^$', 'summary', name='summary'),
+    url(r'^hashtags/$', 'tag_list', name='tag_list'),
+    url(r'^hashtags/(?P<tag_slug>\w+)/$', 'tag_view', name='tag_view'),
+    url(r'^users/$', 'user_list', name='user_list'),
+    url(r'^users/(?P<screen_name>\w+)/$', 'user_view', name='user_view'),
 )
