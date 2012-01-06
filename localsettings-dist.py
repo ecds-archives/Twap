@@ -24,9 +24,9 @@ STATIC_URL = '%s/sitemedia/' % SUB_URL
 ADMIN_MEDIA_PREFIX = '%s/sitemedia/admin/' % SUB_URL
 
 # Some default login and logout URL information.
-LOGIN_URL = '%s/login/' % SUB_URL
+LOGIN_URL = '%s/accounts/login/' % SUB_URL
 LOGIN_REDIRECT_URL = '%s/' % SUB_URL
-LOGOUT_URL = '%s/logout/' % SUB_URL
+LOGOUT_URL = '%s/accounts/logout/' % SUB_URL
 
 
 ADMINS = (
@@ -53,5 +53,6 @@ SECRET_KEY = ''
 
 # These are used to connect and read from the twitter streaming API
 
-TWITTER_USER = '' 
-TWITTER_PASSWORD = ''
+TWITTER_USER = '' # Twitter user account
+TWITTER_PASSWORD = ''  # Twitter password
+TWAP_SAVE_JSON = False # Uncomment if you want to archvve the full json return for each tweet.

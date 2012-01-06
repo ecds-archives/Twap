@@ -134,7 +134,7 @@ def summary(request):
     tag_count = Tag.objects.count()
     loc_count = TwitterGeo.objects.count()
 
-    now = datetime.now()
+    now = datetime.utcnow()
     then = now - timedelta(hours=2)
     tweet_list = Tweet.objects.all()
     volume_count = tweet_list.filter(created_at__range=(then, now)).count()

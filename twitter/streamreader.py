@@ -1,9 +1,13 @@
-import time
+import time, json
 from datetime import datetime
+
+from django.conf import settings
 
 import tweetstream
 
-from twap.twitter.models import Tweet, TwitterUser, TwitterCoordinate, TwitterGeo
+from twap.twitter.models import Tweet, TwitterUser, TwitterCoordinate, TwitterGeo, RawTweet
+
+TWAP_ARCHIVE = getattr(settings, 'TWAP_SAVE_JSON', False)
 
 class StreamHarvest(object):
     # Simple hack to grab twitter stuff.
@@ -35,6 +39,8 @@ class StreamHarvest(object):
                             obj.tweet_id = tweet["id_str"]
                             obj.created_at = self.make_datetime(tweet["created_at"])
                             obj.save()
+                            if TWAP_ARCHIVE:
+                                self.archive_json(obj, tweet)
                             for tag in self.hashtags(tweet):
                                 obj.tags.add(tag)
                             if tweet["geo"]:
@@ -50,6 +56,13 @@ class StreamHarvest(object):
             except:
                 print "Unknown Error on connection. Attempting reconnect in 30 seconds."
                 time.sleep(30)
+
+    def archive_json(self, tweet, streamobj):
+        """
+        Archives the entire contents of a tweets JSON return.
+        """
+        raw = RawTweet(tweet=tweet, json=json.dumps(streamobj))
+        raw.save()
 
     def hashtags(self, tweet):
         """
