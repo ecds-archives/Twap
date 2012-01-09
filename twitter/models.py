@@ -53,3 +53,11 @@ class TwitterCoordinate(models.Model):
     latitude = models.CharField(max_length=25) # coordinates.coordinates[0]
     longitude = models.CharField(max_length=25) # coordinates.coordinates[1]
 
+class RawTweet(models.Model):
+    """
+    A model to store the entire JSON return of a tweet from twitter.
+    """
+    tweet = models.ForeignKey(Tweet)
+    json_helptext = "Raw JSON return of tweet."
+    json = models.TextField(editable=False, help_text=json_helptext) # To better preserve data, this shouldn't be editable.
+
