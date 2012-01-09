@@ -9,17 +9,17 @@ def authenticate_user(request):
     nextpage = request.GET.get('next', reverse('twitter:summary'))
     if request.user.is_authenticated():
         return HttpResponseRedirect(nextpage)
-    auth_form = AuthenticationForm(None, request.POST or None)
-    msg = "Not Logged in"
-    if auth_form.is_valid():
-        login(request, auth_form.get_user())
-        msg = 'Logged In'
-        return HttpResponseRedirect(nextpage)
+    if request.method == 'POST':
+        auth_form = AuthenticationForm(data=request.POST)
+        if auth_form.is_valid():
+            login(request, auth_form.get_user())
+            return HttpResponseRedirect(nextpage)
+    else:
+        auth_form = AuthenticationForm()
     return render(request, 'accounts/login.html', {
         'auth_form': auth_form,
         'title': 'User Login',
         'next': nextpage,
-        'message': msg,
     })
 
 def logout_user(request):
