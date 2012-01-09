@@ -2,13 +2,16 @@
 
 {% block content-title %}{{ title }}{% endblock %}
 
-{% if auth_form.non_field_errors%}
-    {% block message %}
-        <div id="error_msg" class="error">
+
+{% block messages %}
+    {{ block.super }}
+    {% if auth_form.non_field_errors %}
+    <div id="error_msg" class="error">
         {{ auth_form.non_field_errors }}
-        </div>
-    {% endblock %}
-{% endif %}
+    </div>
+    {% endif %}
+{% endblock %}
+
 
 {% block content-body %}
     <form action="{% url accounts:login %}" method="POST">
@@ -24,5 +27,5 @@
     <input type="hidden" name="next" value="{{ next }}" />
     </fieldset>
     </form>
-    {{ ct }}
+
 {%  endblock %}
