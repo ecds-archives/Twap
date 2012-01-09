@@ -56,3 +56,4 @@ SECRET_KEY = ''
 TWITTER_USER = '' # Twitter user account
 TWITTER_PASSWORD = ''  # Twitter password
 TWAP_SAVE_JSON = False # Uncomment if you want to archvve the full json return for each tweet.
+TWAP_SAVE_DIR = '' # Path to save raw tweet archive files to by default path.normpath(path.join(BASE_DIR, '../archive'))

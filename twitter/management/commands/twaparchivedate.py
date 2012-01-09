@@ -6,6 +6,7 @@ from os import path
 from django.core.management.base import BaseCommand, CommandError
 
 from twap.twitter.models import RawTweet
+from twap.settings import TWAP_SAVE_DIR
 
 class Command(BaseCommand):
     args = '<date>'
@@ -21,12 +22,19 @@ class Command(BaseCommand):
             dest='purge',
             default=False,
             help='aftering wrting to file delete raw tweets from that database (saves space)'
+        ),
+        make_option('--directory',
+            dest='directory',
+            default=TWAP_SAVE_DIR,
+            help='Directory to write archive files, defaults to value of TWAP_SAVE_DIR in settings if not supplied.'
         )
     ) # add a silent option to skip raw input.
 
     def handle(self, *args, **options):
         raw_date = options.get('date', None)
         raw_purge = options.get('purge', False)
+
+        filepath = self._make_dumpfilename(options.get('directory', None), raw_date)
 
         date_format = "%Y-%m-%d"
 
@@ -42,24 +50,29 @@ class Command(BaseCommand):
         # Convert to python dicts and load into a list.
         tweet_list = [json.loads(tweet.json) for tweet in rawtweet_list]
 
-        # promp user if this file already exists.
-        dumpfilename = 'tweetdump_%s.json' % raw_date
-
-        path_feedback = """
-        File %s already exists, if you continue all data in that file will be LOST!!!
-        Type 'yes' if you wish to continue, or 'no' if you wish to abort.
-        """ % dumpfilename
-        if path.isfile(dumpfilename):
-            if raw_input(path_feedback) != 'yes':
-                raise CommandError('Aborting - File already exists!')
-
-            # Dump list as json to file but raise error if it already exists.
-        with open(dumpfilename, 'wb') as f:
+        # Dump list as json to file but raise error if it already exists.
+        with open(filepath, 'wb') as f:
             f.write(json.dumps(tweet_list)) # Write it all out to file..
 
-        # If PURGE is true then ask the user again to confirm, then delete all raw tweets in range.
-        raw_feedback = """Are you sure you wish to PURGE raw tweets from that database
-            for %s? type 'yes' to confirm or 'no' to skip.""" % raw_date
-        if raw_purge and raw_input(raw_feedback) == 'yes':
-            rawtweet_list.delete()
+    def _check_directory(self, dir):
+        """
+        Checks that the supplied directory exists or raises a command error if not.
+        """
+        if not path.isdir(dir):
+            raise CommandError('Archive directory %s is not a valid directory!' % dir)
+        return dir # return it if the directory is valid.
+
+    def _make_dumpfilename(self, raw_dir, raw_date):
+        """
+        Creates the name of the dumpfile and if it already exists creates a numbered version of that filename instead.
+        """
+        base_name = 'tweetdump_%s' % raw_date
+        archive_dir = "%s/" % self._check_directory(raw_dir)
+        filepath = '%s%s.json' % (archive_dir, base_name)
+        i = 1
+        while path.isfile(filepath):
+            base_name = 'tweetdump_%s_%s' % (raw_date, i)
+            filepath = '%s%s.json' % (archive_dir, base_name)
+            i += 1
+        return filepath
             
