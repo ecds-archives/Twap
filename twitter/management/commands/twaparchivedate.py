@@ -54,6 +54,10 @@ class Command(BaseCommand):
         with open(filepath, 'wb') as f:
             f.write(json.dumps(tweet_list)) # Write it all out to file..
 
+        # Purge all the records from the database if this record is set.
+        if raw_purge:
+            rawtweet_list.delete()
+
     def _check_directory(self, dir):
         """
         Checks that the supplied directory exists or raises a command error if not.
