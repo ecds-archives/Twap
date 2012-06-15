@@ -22,6 +22,7 @@ class Command(BaseCommand):
         # tweets = Tweet.objects.filter(created_at__month=month, created_at__year=year).prefetch_related()
         tweets = Tweet.objects.all()[:10000]
         outfile = open('../twap_dump_%s_%s.json' % (month, year), 'wb')
+        data_list = []
         for tweet in tweets:
             data = {
                 'tweet': tweet.text,
@@ -36,4 +37,6 @@ class Command(BaseCommand):
             coord = tweet.twittercoordinate_set.all()
             if coord:
                 data['coordinate'] = {'lat': coord[0].latitude, 'long': coord[0].longitude}
-            outfile.write("%s\n" % json.dumps(data))
+            data_list.append(data)
+
+        outfile.write(json.dumps(data_list))
