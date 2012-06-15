@@ -18,7 +18,7 @@ class Command(BaseCommand):
 
     def _write_month(self, month, year):
         tweets = Tweet.objects.filter(created_at__month=month, created_at__year=year).prefetch_related()
-        outfile = open('../twap_dump_%s_%y.json' % (month, year), 'wb')
+        outfile = open('../twap_dump_%s_%s.json' % (month, year), 'wb')
         for tweet in tweets:
             data = {
                 'tweet': tweet.text,
