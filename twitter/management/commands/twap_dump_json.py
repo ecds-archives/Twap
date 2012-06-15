@@ -11,9 +11,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for month in range(1, 13):
-            year = 2012
+            year = 2011
             if month < 9:
-                year = 2011
+                year = 2012
             self._write_month(month, year)
 
     def _write_month(self, month, year):
