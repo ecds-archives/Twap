@@ -10,17 +10,14 @@ class Command(BaseCommand):
     help = 'Dumps Tweets to a json file.'
 
     def handle(self, *args, **options):
-#        for month in range(1, 13):
-#            year = 2011
-#            if month < 9:
-#                year = 2012
-        month = 3
-        year = 2012
-        self._write_month(month, year)
+        for month in range(1, 13):
+            year = 2011
+            if month < 9:
+                year = 2012
+            self._write_month(month, year)
 
     def _write_month(self, month, year):
-        # tweets = Tweet.objects.filter(created_at__month=month, created_at__year=year).prefetch_related()
-        tweets = Tweet.objects.all()[:10000]
+        tweets = Tweet.objects.filter(created_at__month=month, created_at__year=year).prefetch_related()
         outfile = open('../twap_dump_%s_%s.json' % (month, year), 'wb')
         data_list = []
         for tweet in tweets:
