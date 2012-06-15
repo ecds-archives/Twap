@@ -11,7 +11,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         tweets = Tweet.objects.all()
-        big_tweets = []
+        outfile = open('../twap_dump.json', 'wb')
         for tweet in tweets:
             data = {
                 'tweet': tweet.text,
@@ -26,7 +26,4 @@ class Command(BaseCommand):
             coord = tweet.twittercoordinate_set.all()
             if coord:
                 data['coordinate'] = {'lat': coord[0].latitude, 'long': coord[0].longitude}
-            big_tweets.append(data)
-        with open('../twap_dump.json', 'wb') as f:
-            for chunk in json.JSONEncoder().iterencode(big_tweets):
-                f.write(chunk)
+            outfile.write("%s\n", json.dumps(data))
