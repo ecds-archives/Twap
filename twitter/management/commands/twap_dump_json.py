@@ -10,8 +10,15 @@ class Command(BaseCommand):
     help = 'Dumps Tweets to a json file.'
 
     def handle(self, *args, **options):
-        tweets = Tweet.objects.all()
-        outfile = open('../twap_dump.json', 'wb')
+        for month in range(1, 13):
+            year = 2012
+            if month < 9:
+                year = 2011
+            self._write_month(month, year)
+
+    def _write_month(self, month, year):
+        tweets = Tweet.objects.filter(created_at__month=month, created_at__year=year).prefetch_related()
+        outfile = open('../twap_dump_%s_%y.json' % (month, year), 'wb')
         for tweet in tweets:
             data = {
                 'tweet': tweet.text,
@@ -26,4 +33,4 @@ class Command(BaseCommand):
             coord = tweet.twittercoordinate_set.all()
             if coord:
                 data['coordinate'] = {'lat': coord[0].latitude, 'long': coord[0].longitude}
-            outfile.write("%s\n", json.dumps(data))
+            outfile.write("%s\n" % json.dumps(data))
