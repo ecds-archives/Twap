@@ -61,3 +61,11 @@ class RawTweet(models.Model):
     json_helptext = "Raw JSON return of tweet."
     json = models.TextField(editable=False, help_text=json_helptext) # To better preserve data, this shouldn't be editable.
 
+#    def __unicode__(self):
+#        u"Raw JSON for tweet id %s" % (self.tweet.id)
+#
+#    def __str__(self):
+#        "%s" % self.tweet.id
+
+    class Meta:
+        verbose_name = "Raw JSON"

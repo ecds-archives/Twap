@@ -53,6 +53,9 @@ SECRET_KEY = ''
 
 # These are used to connect and read from the twitter streaming API
 
+# Set this to override the default searchlist in settings.py
+# TWAP_SEARCHLIST = []
+
 TWITTER_USER = '' # Twitter user account
 TWITTER_PASSWORD = ''  # Twitter password
 TWAP_SAVE_JSON = False # Uncomment if you want to archvve the full json return for each tweet.
