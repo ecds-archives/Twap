@@ -43,7 +43,6 @@ class Command(BaseCommand):
                 ).save()
 
 
-
     def _handle_tweet(self, tweet_data):
         """
         Bases raw tweet data into various django models.
@@ -57,6 +56,7 @@ class Command(BaseCommand):
         except Tweet.DoesNotExist:
             tweet = Tweet(
                 twitter_user = self._handle_user(tweet_data),
+                tweet_id = tweet_data['id'],
                 created_at = self._parse_datetime(tweet_data['created_at']),
                 text = tweet_data['text']
             )
